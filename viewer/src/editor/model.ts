@@ -39,21 +39,9 @@ export function updateParagraphText(
   paragraphId: string,
   nextText: string,
 ): EditorDocument {
-  return updateTopLevelParagraph(document, paragraphId, (paragraph) => {
+  return updateAnyParagraph(document, paragraphId, (paragraph) => {
     const marks = paragraph.children[0]?.marks ?? [];
-    return {
-      ...paragraph,
-      children: nextText
-        ? [
-            {
-              type: "text",
-              id: paragraph.children[0]?.id ?? createNextId(document, "text"),
-              text: nextText,
-              marks,
-            },
-          ]
-        : [],
-    };
+    return buildUpdatedParagraphText(document, paragraph, nextText, marks);
   });
 }
 
@@ -165,6 +153,57 @@ function updateTopLevelParagraph(
       }
       return updater(child);
     }),
+  };
+}
+
+function updateAnyParagraph(
+  document: EditorDocument,
+  paragraphId: string,
+  updater: (paragraph: ParagraphNode) => ParagraphNode,
+): EditorDocument {
+  return {
+    ...document,
+    children: document.children.map((child) => {
+      if (child.type === "paragraph") {
+        return child.id === paragraphId ? updater(child) : child;
+      }
+      if (child.type === "table") {
+        return {
+          ...child,
+          rows: child.rows.map((row) => ({
+            ...row,
+            cells: row.cells.map((cell) => ({
+              ...cell,
+              children: cell.children.map((paragraph) =>
+                paragraph.id === paragraphId ? updater(paragraph) : paragraph,
+              ),
+            })),
+          })),
+        };
+      }
+      return child;
+    }),
+  };
+}
+
+function buildUpdatedParagraphText(
+  document: EditorDocument,
+  paragraph: ParagraphNode,
+  nextText: string,
+  marks: EditorMark[],
+): ParagraphNode {
+  return {
+    ...paragraph,
+    children: nextText
+      ? [
+          {
+            type: "text",
+            id: paragraph.children[0]?.id ?? createNextId(document, "text"),
+            text: nextText,
+            marks,
+          },
+        ]
+      : [],
   };
 }
 

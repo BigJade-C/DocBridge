@@ -113,3 +113,18 @@ def test_unchanged_table_and_image_blocks_survive_round_trip(tmp_path: Path) -> 
     assert [cell.text for row in table.rows for cell in row.cells] == ["A", "B", "C", "D", "E", "F"]
     assert image.binary_stream_ref == "BinData/BIN0001.png"
     assert updated.blocks[0].text == "수정된 문서 제목"
+
+
+def test_table_cell_text_edit_updates_ir_and_preserves_span_metadata(tmp_path: Path) -> None:
+    original = _build_ir_document("007_table_merge.hwp", tmp_path)
+    editor_model = ir_to_editor_model(original)
+
+    table_node = next(child for child in editor_model["children"] if child["type"] == "table")
+    table_node["rows"][0]["cells"][1]["children"][0]["children"][0]["text"] = "수정된 병합 셀"
+
+    updated = editor_model_to_ir(editor_model, original_ir=original)
+    table = next(block for block in updated.blocks if isinstance(block, Table))
+
+    assert table.rows[0].cells[1].text == "수정된 병합 셀"
+    assert table.rows[0].cells[1].colspan == 2
+    assert table.rows[0].cells[1].rowspan == 1

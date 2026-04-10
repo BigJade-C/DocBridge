@@ -90,3 +90,19 @@ def test_editor_model_export_preserves_unchanged_table_and_image_blocks_safely(t
         ["A", "B", "C"],
         ["D", "E", "F"],
     ]
+
+
+def test_editor_model_export_writes_edited_table_cell_text_to_docx(tmp_path: Path) -> None:
+    original = _build_ir_document("003_table_basic.hwp", tmp_path)
+    editor_model = ir_to_editor_model(original)
+    table_node = next(child for child in editor_model["children"] if child["type"] == "table")
+    table_node["rows"][0]["cells"][1]["children"][0]["children"][0]["text"] = "수정된 셀"
+
+    output_path = tmp_path / "table-edit.docx"
+    write_docx_from_editor_model(editor_model, output_path, original_ir=original)
+
+    docx_document = DocxDocument(output_path)
+    assert [[cell.text for cell in row.cells] for row in docx_document.tables[0].rows] == [
+        ["A", "수정된 셀", "C"],
+        ["D", "E", "F"],
+    ]

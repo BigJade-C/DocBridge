@@ -72,7 +72,7 @@ describe("EditorSurface", () => {
     expect(afterDeleteCount).toBe(beforeParagraphCount);
   });
 
-  it("table and image remain read-only while paragraph editing is enabled", () => {
+  it("table cell text becomes editable while image blocks remain read-only", () => {
     const { container } = render(
       <EditorSurface
         initialDocument={fixture as EditorDocument}
@@ -87,8 +87,27 @@ describe("EditorSurface", () => {
     const imagePlaceholder = screen.getByText("src: BinData/BIN0001.png");
     expect(imagePlaceholder).toBeInTheDocument();
 
-    const tableParagraph = within(table as HTMLTableElement).getByText("A").closest("p");
-    expect(tableParagraph).not.toHaveAttribute("contenteditable", "true");
+    const tableParagraph = within(table as HTMLTableElement).getByText("A").closest('[role="textbox"]');
+    expect(tableParagraph).toHaveAttribute("contenteditable", "true");
+  });
+
+  it("editing table cell text updates the in-memory model while keeping table structure", () => {
+    render(
+      <EditorSurface
+        initialDocument={fixture as EditorDocument}
+        originalIr={originalIrFixture as object}
+      />,
+    );
+
+    const tableCellParagraph = screen.getByTestId("paragraph-p5");
+    tableCellParagraph.textContent = "수정된 셀";
+    fireEvent.input(tableCellParagraph);
+    fireEvent.click(screen.getByRole("button", { name: "Show Debug" }));
+
+    expect(screen.getByText("수정된 셀")).toBeInTheDocument();
+    expect(screen.getByText(/"text": "수정된 셀"/)).toBeInTheDocument();
+    expect(screen.getByText(/"colspan": 1/)).toBeInTheDocument();
+    expect(screen.getByText(/"rowspan": 1/)).toBeInTheDocument();
   });
 
   it("keeps the debug panel hidden by default and toggles it on demand", () => {

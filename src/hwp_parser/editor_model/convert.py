@@ -58,10 +58,8 @@ def editor_model_to_ir(
             paragraph_index += 1
             continue
         if node_type == "table":
-            if table_index < len(passthrough_tables):
-                blocks.append(passthrough_tables[table_index])
-            else:
-                blocks.append(_table_node_to_ir(child))
+            template = passthrough_tables[table_index] if table_index < len(passthrough_tables) else None
+            blocks.append(_table_node_to_ir(child, template=template))
             table_index += 1
             continue
         if node_type == "image":
@@ -207,30 +205,48 @@ def _text_node_to_ir(data: Mapping[str, Any], template: Paragraph | None) -> Tex
     )
 
 
-def _table_node_to_ir(data: Mapping[str, Any]) -> Table:
+def _table_node_to_ir(data: Mapping[str, Any], template: Table | None = None) -> Table:
     rows = []
     column_count = 0
     for row_index, row_data in enumerate(_list_of_mappings(data.get("rows"))):
         cells = []
+        template_row = template.rows[row_index] if template is not None and row_index < len(template.rows) else None
         for column_index, cell_data in enumerate(_list_of_mappings(row_data.get("cells"))):
+            template_cell = (
+                template_row.cells[column_index]
+                if template_row is not None and column_index < len(template_row.cells)
+                else None
+            )
             cells.append(
                 TableCell(
                     text=_cell_text_from_node(cell_data),
                     row_index=row_index,
                     column_index=column_index,
-                    colspan=_optional_int(cell_data.get("colspan")) or 1,
-                    rowspan=_optional_int(cell_data.get("rowspan")) or 1,
+                    colspan=_optional_int(cell_data.get("colspan")) or (template_cell.colspan if template_cell is not None else 1),
+                    rowspan=_optional_int(cell_data.get("rowspan")) or (template_cell.rowspan if template_cell is not None else 1),
+                    source_record_index=template_cell.source_record_index if template_cell is not None else None,
+                    raw=dict(template_cell.raw) if template_cell is not None else {},
                 )
             )
-        column_count = max(column_count, len(cells))
+        column_count = max(
+            column_count,
+            sum(cell.colspan for cell in cells) if cells else 0,
+        )
         from hwp_parser.ir.models import TableRow
 
-        rows.append(TableRow(cells=cells))
+        rows.append(
+            TableRow(
+                cells=cells,
+                source_index=template_row.source_index if template_row is not None else None,
+            )
+        )
 
     return Table(
         rows=rows,
-        row_count=len(rows),
-        column_count=column_count,
+        row_count=template.row_count if template is not None else len(rows),
+        column_count=template.column_count if template is not None else column_count,
+        source_path=template.source_path if template is not None else None,
+        source_index=template.source_index if template is not None else None,
     )
 
 

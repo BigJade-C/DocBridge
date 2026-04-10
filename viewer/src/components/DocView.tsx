@@ -56,7 +56,14 @@ function NodeView({
     );
   }
   if (node.type === "table") {
-    return <TableView node={node as TableNode} />;
+    return (
+      <TableView
+        node={node as TableNode}
+        editableParagraphId={editableParagraphId}
+        onSelectParagraph={onSelectParagraph}
+        onParagraphTextChange={onParagraphTextChange}
+      />
+    );
   }
   if (node.type === "image") {
     return <ImageView node={node as ImageNode} />;

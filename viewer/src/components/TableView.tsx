@@ -3,9 +3,19 @@ import { ParagraphView } from "./ParagraphView";
 
 type TableViewProps = {
   node: TableNode;
+  editableParagraphId?: string | null;
+  onSelectParagraph?: (paragraphId: string) => void;
+  onParagraphTextChange?: (paragraphId: string, text: string) => void;
 };
 
-export function TableView({ node }: TableViewProps) {
+export function TableView({
+  node,
+  editableParagraphId,
+  onSelectParagraph,
+  onParagraphTextChange,
+}: TableViewProps) {
+  const isEditable = Boolean(onSelectParagraph && onParagraphTextChange);
+
   return (
     <div className="em-table-wrap" data-node-id={node.id}>
       <table className="em-table">
@@ -20,7 +30,14 @@ export function TableView({ node }: TableViewProps) {
                   data-node-id={cell.id}
                 >
                   {cell.children.map((paragraph) => (
-                    <ParagraphView key={paragraph.id} node={paragraph} />
+                    <ParagraphView
+                      key={paragraph.id}
+                      node={paragraph}
+                      editable={isEditable}
+                      selected={editableParagraphId === paragraph.id}
+                      onSelect={onSelectParagraph}
+                      onTextChange={onParagraphTextChange}
+                    />
                   ))}
                 </td>
               ))}
