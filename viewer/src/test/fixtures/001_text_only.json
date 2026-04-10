@@ -1,0 +1,82 @@
+{
+  "type": "doc",
+  "id": "doc1",
+  "children": [
+    {
+      "type": "paragraph",
+      "id": "p1",
+      "attrs": {
+        "alignment": "left"
+      },
+      "children": [
+        {
+          "type": "text",
+          "id": "text1",
+          "text": "제목입니다",
+          "marks": [
+            {
+              "type": "fontSize",
+              "value": 10.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "id": "p2",
+      "attrs": {
+        "alignment": "left"
+      },
+      "children": []
+    },
+    {
+      "type": "paragraph",
+      "id": "p3",
+      "attrs": {
+        "alignment": "left"
+      },
+      "children": [
+        {
+          "type": "text",
+          "id": "text2",
+          "text": "첫 번째 문단입니다",
+          "marks": [
+            {
+              "type": "fontSize",
+              "value": 10.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "id": "p4",
+      "attrs": {
+        "alignment": "left"
+      },
+      "children": []
+    },
+    {
+      "type": "paragraph",
+      "id": "p5",
+      "attrs": {
+        "alignment": "left"
+      },
+      "children": [
+        {
+          "type": "text",
+          "id": "text3",
+          "text": "두 번째 문단입니다",
+          "marks": [
+            {
+              "type": "fontSize",
+              "value": 10.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

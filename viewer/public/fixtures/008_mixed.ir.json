@@ -1,0 +1,748 @@
+{
+  "source_path": "BodyText/Section0",
+  "header": null,
+  "footer": null,
+  "block_count": 6,
+  "blocks": [
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 0,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "문서 제목",
+      "paragraph_style": {
+        "alignment": "center",
+        "style_ref": 20
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "문서 제목",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": true,
+            "font_size_pt": 15.0,
+            "style_ref": 7
+          }
+        }
+      ]
+    },
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 1,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "첫 번째 문단입니다",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "첫 번째 문단입니다",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    },
+    {
+      "block_type": "table",
+      "source_path": "BodyText/Section0",
+      "source_index": 2,
+      "row_count": 2,
+      "column_count": 3,
+      "rows": [
+        {
+          "source_index": 0,
+          "cells": [
+            {
+              "text": "A",
+              "row_index": 0,
+              "column_index": 0,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 28,
+              "raw": {
+                "payload_hex": "01000000200000000000000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "B",
+              "row_index": 0,
+              "column_index": 1,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 33,
+              "raw": {
+                "payload_hex": "01000000200000000100000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  1,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "C",
+              "row_index": 0,
+              "column_index": 2,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 38,
+              "raw": {
+                "payload_hex": "01000000200000000200000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  2,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "source_index": 1,
+          "cells": [
+            {
+              "text": "D",
+              "row_index": 1,
+              "column_index": 0,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 43,
+              "raw": {
+                "payload_hex": "01000000200000000000010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "E",
+              "row_index": 1,
+              "column_index": 1,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 48,
+              "raw": {
+                "payload_hex": "01000000200000000100010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "F",
+              "row_index": 1,
+              "column_index": 2,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 53,
+              "raw": {
+                "payload_hex": "01000000200000000200010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  2,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 3,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "두 번째 문단입니다",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "두 번째 문단입니다",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    },
+    {
+      "block_type": "image",
+      "source_path": "BodyText/Section0",
+      "source_index": 4,
+      "source_ref": "BodyText/Section0:72",
+      "source_record_index": 72,
+      "binary_stream_ref": "BinData/BIN0001.png",
+      "width": 444,
+      "height": 517,
+      "placement": null,
+      "alt_text": "그림입니다.",
+      "original_filename": "스크린샷 2026-04-09 오전 9.03.36.png",
+      "original_size_text": "원본 그림의 크기: 가로 444pixel, 세로 517pixel",
+      "raw": {
+        "payload_hex": "206f736710232a04000000000000000014820000689700000100000000000000000000006ce60a7f000000005f00f8adbcb985c7c8b2e4b22e000d000a00d0c6f8bc2000f8adbcb958c7200074c784b93a002000091173110f11731105117511ab1109116311ba11200032003000320036002d00300034002d003000390020000b1169110c116511ab11200039002e00300033002e00330036002e0070006e0067000d000a00d0c6f8bc2000f8adbcb958c720006cd030ae3a00200000ac5cb8200034003400340070006900780065006c002c00200038c15cb8200035003100370070006900780065006c00",
+        "metadata_lines": [
+          "그림입니다.",
+          "원본 그림의 이름: 스크린샷 2026-04-09 오전 9.03.36.png",
+          "원본 그림의 크기: 가로 444pixel, 세로 517pixel"
+        ],
+        "visible_text_lines": [
+          "그림입니다."
+        ],
+        "binary_output_path": "artifacts/editor_model_fixtures/debug/008_mixed_hwp/BinData/BIN0001.png"
+      }
+    },
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 5,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "세 번째 문단입니다",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "세 번째 문단입니다",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    }
+  ],
+  "visible_text_blocks": [
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 0,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "문서 제목",
+      "paragraph_style": {
+        "alignment": "center",
+        "style_ref": 20
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "문서 제목",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": true,
+            "font_size_pt": 15.0,
+            "style_ref": 7
+          }
+        }
+      ]
+    },
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 1,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "첫 번째 문단입니다",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "첫 번째 문단입니다",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    },
+    {
+      "block_type": "table",
+      "source_path": "BodyText/Section0",
+      "source_index": 2,
+      "row_count": 2,
+      "column_count": 3,
+      "rows": [
+        {
+          "source_index": 0,
+          "cells": [
+            {
+              "text": "A",
+              "row_index": 0,
+              "column_index": 0,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 28,
+              "raw": {
+                "payload_hex": "01000000200000000000000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "B",
+              "row_index": 0,
+              "column_index": 1,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 33,
+              "raw": {
+                "payload_hex": "01000000200000000100000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  1,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "C",
+              "row_index": 0,
+              "column_index": 2,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 38,
+              "raw": {
+                "payload_hex": "01000000200000000200000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  2,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "source_index": 1,
+          "cells": [
+            {
+              "text": "D",
+              "row_index": 1,
+              "column_index": 0,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 43,
+              "raw": {
+                "payload_hex": "01000000200000000000010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "E",
+              "row_index": 1,
+              "column_index": 1,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 48,
+              "raw": {
+                "payload_hex": "01000000200000000100010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "F",
+              "row_index": 1,
+              "column_index": 2,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 53,
+              "raw": {
+                "payload_hex": "01000000200000000200010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  2,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 3,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "두 번째 문단입니다",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "두 번째 문단입니다",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    },
+    {
+      "block_type": "image",
+      "source_path": "BodyText/Section0",
+      "source_index": 4,
+      "source_ref": "BodyText/Section0:72",
+      "source_record_index": 72,
+      "binary_stream_ref": "BinData/BIN0001.png",
+      "width": 444,
+      "height": 517,
+      "placement": null,
+      "alt_text": "그림입니다.",
+      "original_filename": "스크린샷 2026-04-09 오전 9.03.36.png",
+      "original_size_text": "원본 그림의 크기: 가로 444pixel, 세로 517pixel",
+      "raw": {
+        "payload_hex": "206f736710232a04000000000000000014820000689700000100000000000000000000006ce60a7f000000005f00f8adbcb985c7c8b2e4b22e000d000a00d0c6f8bc2000f8adbcb958c7200074c784b93a002000091173110f11731105117511ab1109116311ba11200032003000320036002d00300034002d003000390020000b1169110c116511ab11200039002e00300033002e00330036002e0070006e0067000d000a00d0c6f8bc2000f8adbcb958c720006cd030ae3a00200000ac5cb8200034003400340070006900780065006c002c00200038c15cb8200035003100370070006900780065006c00",
+        "metadata_lines": [
+          "그림입니다.",
+          "원본 그림의 이름: 스크린샷 2026-04-09 오전 9.03.36.png",
+          "원본 그림의 크기: 가로 444pixel, 세로 517pixel"
+        ],
+        "visible_text_lines": [
+          "그림입니다."
+        ],
+        "binary_output_path": "artifacts/editor_model_fixtures/debug/008_mixed_hwp/BinData/BIN0001.png"
+      }
+    },
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 5,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "세 번째 문단입니다",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "세 번째 문단입니다",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    }
+  ]
+}

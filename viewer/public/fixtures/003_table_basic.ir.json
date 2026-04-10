@@ -1,0 +1,588 @@
+{
+  "source_path": "BodyText/Section0",
+  "header": null,
+  "footer": null,
+  "block_count": 3,
+  "blocks": [
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 0,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "표 예제",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "표 예제",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    },
+    {
+      "block_type": "table",
+      "source_path": "BodyText/Section0",
+      "source_index": 1,
+      "row_count": 2,
+      "column_count": 3,
+      "rows": [
+        {
+          "source_index": 0,
+          "cells": [
+            {
+              "text": "A",
+              "row_index": 0,
+              "column_index": 0,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 14,
+              "raw": {
+                "payload_hex": "01000000200000000000000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "B",
+              "row_index": 0,
+              "column_index": 1,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 19,
+              "raw": {
+                "payload_hex": "01000000200000000100000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  1,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "C",
+              "row_index": 0,
+              "column_index": 2,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 24,
+              "raw": {
+                "payload_hex": "01000000200000000200000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  2,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "source_index": 1,
+          "cells": [
+            {
+              "text": "D",
+              "row_index": 1,
+              "column_index": 0,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 29,
+              "raw": {
+                "payload_hex": "01000000200000000000010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "E",
+              "row_index": 1,
+              "column_index": 1,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 34,
+              "raw": {
+                "payload_hex": "01000000200000000100010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "F",
+              "row_index": 1,
+              "column_index": 2,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 39,
+              "raw": {
+                "payload_hex": "01000000200000000200010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  2,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 2,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "표 아래 설명",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "표 아래 설명",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    }
+  ],
+  "visible_text_blocks": [
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 0,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "표 예제",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "표 예제",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    },
+    {
+      "block_type": "table",
+      "source_path": "BodyText/Section0",
+      "source_index": 1,
+      "row_count": 2,
+      "column_count": 3,
+      "rows": [
+        {
+          "source_index": 0,
+          "cells": [
+            {
+              "text": "A",
+              "row_index": 0,
+              "column_index": 0,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 14,
+              "raw": {
+                "payload_hex": "01000000200000000000000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  0,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "B",
+              "row_index": 0,
+              "column_index": 1,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 19,
+              "raw": {
+                "payload_hex": "01000000200000000100000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  1,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "C",
+              "row_index": 0,
+              "column_index": 2,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 24,
+              "raw": {
+                "payload_hex": "01000000200000000200000001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  2,
+                  0,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "source_index": 1,
+          "cells": [
+            {
+              "text": "D",
+              "row_index": 1,
+              "column_index": 0,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 29,
+              "raw": {
+                "payload_hex": "01000000200000000000010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  0,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "E",
+              "row_index": 1,
+              "column_index": 1,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 34,
+              "raw": {
+                "payload_hex": "01000000200000000100010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            {
+              "text": "F",
+              "row_index": 1,
+              "column_index": 2,
+              "colspan": 1,
+              "rowspan": 1,
+              "source_record_index": 39,
+              "raw": {
+                "payload_hex": "01000000200000000200010001000100a03600001a010000fe01fe018d008d000300a0360000000000000000000000",
+                "u16": [
+                  1,
+                  0,
+                  32,
+                  0,
+                  2,
+                  1,
+                  1,
+                  1,
+                  13984,
+                  0,
+                  282,
+                  0,
+                  510,
+                  510,
+                  141,
+                  141,
+                  3,
+                  13984,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "block_type": "paragraph",
+      "source_path": "BodyText/Section0",
+      "source_index": 2,
+      "paragraph_type": "text_paragraph",
+      "is_empty": false,
+      "text": "표 아래 설명",
+      "paragraph_style": {
+        "alignment": null,
+        "style_ref": 0
+      },
+      "list_info": null,
+      "text_runs": [
+        {
+          "kind": "text",
+          "text": "표 아래 설명",
+          "field_type": null,
+          "resolved_text": null,
+          "raw": {},
+          "character_style": {
+            "bold": false,
+            "font_size_pt": 10.0,
+            "style_ref": 0
+          }
+        }
+      ]
+    }
+  ]
+}

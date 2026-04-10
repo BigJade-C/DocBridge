@@ -1,0 +1,255 @@
+{
+  "type": "doc",
+  "id": "doc1",
+  "children": [
+    {
+      "type": "paragraph",
+      "id": "p1",
+      "attrs": {
+        "alignment": "center"
+      },
+      "children": [
+        {
+          "type": "text",
+          "id": "text1",
+          "text": "문서 제목",
+          "marks": [
+            {
+              "type": "bold"
+            },
+            {
+              "type": "fontSize",
+              "value": 15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "id": "p2",
+      "attrs": {
+        "alignment": "left"
+      },
+      "children": [
+        {
+          "type": "text",
+          "id": "text2",
+          "text": "첫 번째 문단입니다",
+          "marks": [
+            {
+              "type": "fontSize",
+              "value": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "id": "t1",
+      "rows": [
+        {
+          "type": "tableRow",
+          "id": "tr1",
+          "cells": [
+            {
+              "type": "tableCell",
+              "id": "tc1",
+              "colspan": 1,
+              "rowspan": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "id": "p3",
+                  "attrs": {
+                    "alignment": "left"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "text3",
+                      "text": "A",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableCell",
+              "id": "tc2",
+              "colspan": 1,
+              "rowspan": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "id": "p4",
+                  "attrs": {
+                    "alignment": "left"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "text4",
+                      "text": "B",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableCell",
+              "id": "tc3",
+              "colspan": 1,
+              "rowspan": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "id": "p5",
+                  "attrs": {
+                    "alignment": "left"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "text5",
+                      "text": "C",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "tableRow",
+          "id": "tr2",
+          "cells": [
+            {
+              "type": "tableCell",
+              "id": "tc4",
+              "colspan": 1,
+              "rowspan": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "id": "p6",
+                  "attrs": {
+                    "alignment": "left"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "text6",
+                      "text": "D",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableCell",
+              "id": "tc5",
+              "colspan": 1,
+              "rowspan": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "id": "p7",
+                  "attrs": {
+                    "alignment": "left"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "text7",
+                      "text": "E",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableCell",
+              "id": "tc6",
+              "colspan": 1,
+              "rowspan": 1,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "id": "p8",
+                  "attrs": {
+                    "alignment": "left"
+                  },
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "text8",
+                      "text": "F",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "id": "p9",
+      "attrs": {
+        "alignment": "left"
+      },
+      "children": [
+        {
+          "type": "text",
+          "id": "text9",
+          "text": "두 번째 문단입니다",
+          "marks": [
+            {
+              "type": "fontSize",
+              "value": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "id": "img1",
+      "attrs": {
+        "src": "BinData/BIN0001.png",
+        "width": 444,
+        "height": 517,
+        "alt": "그림입니다."
+      }
+    },
+    {
+      "type": "paragraph",
+      "id": "p10",
+      "attrs": {
+        "alignment": "left"
+      },
+      "children": [
+        {
+          "type": "text",
+          "id": "text10",
+          "text": "세 번째 문단입니다",
+          "marks": [
+            {
+              "type": "fontSize",
+              "value": 10
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

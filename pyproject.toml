@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hwp-parser"
+version = "0.1.0"
+description = "Minimal foundation for dumping HWP OLE streams"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "olefile>=0.47",
+  "python-docx>=1.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+]
+
+[project.scripts]
+hwp-dump = "hwp_parser.cli:main"
+ir-to-docx = "hwp_parser.docx_writer.cli:main"
+editor-model-to-docx = "hwp_parser.editor_model.export_cli:main"
+regenerate-ir-fixtures = "hwp_parser.fixtures.regenerate:main"
+import-document-to-ir = "hwp_parser.importers.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
