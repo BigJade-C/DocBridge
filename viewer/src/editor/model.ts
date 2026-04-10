@@ -1,6 +1,7 @@
 import type { BlockNode, EditorDocument, EditorMark, ImageNode, ParagraphNode, TextNode } from "../types";
 
 export type ParagraphAlignment = "left" | "center" | "right";
+export type ParagraphListKind = "none" | "numbered" | "bullet";
 
 export function getTopLevelParagraphs(document: EditorDocument): ParagraphNode[] {
   return document.children.filter((child): child is ParagraphNode => child.type === "paragraph");
@@ -39,6 +40,10 @@ export function getParagraphFontSize(paragraph: ParagraphNode): number | null {
     }
   }
   return null;
+}
+
+export function getParagraphListKind(paragraph: ParagraphNode): ParagraphListKind {
+  return paragraph.attrs?.listKind ?? "none";
 }
 
 export function updateParagraphText(
@@ -89,6 +94,21 @@ export function setParagraphAlignment(
     attrs: {
       ...paragraph.attrs,
       alignment,
+    },
+  }));
+}
+
+export function setParagraphListKind(
+  document: EditorDocument,
+  paragraphId: string,
+  listKind: ParagraphListKind,
+): EditorDocument {
+  return updateTopLevelParagraph(document, paragraphId, (paragraph) => ({
+    ...paragraph,
+    attrs: {
+      ...paragraph.attrs,
+      listKind,
+      listLevel: listKind === "none" ? undefined : 0,
     },
   }));
 }

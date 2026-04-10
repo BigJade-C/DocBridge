@@ -35,7 +35,8 @@ export function ParagraphView({
   const fontSizeMark = firstChildMarks.find((mark) => mark.type === "fontSize");
   const fontSize = fontSizeMark ? fontSizeMark.value : undefined;
   const isTitleLike = (node.attrs?.alignment ?? "left") === "center" && isBold && (fontSize ?? 0) >= 14;
-  const paragraphClassName = `em-paragraph${isTitleLike ? " em-paragraph-title" : ""}`;
+  const listKind = node.attrs?.listKind ?? "none";
+  const paragraphClassName = `em-paragraph${isTitleLike ? " em-paragraph-title" : ""}${listKind !== "none" ? " em-paragraph-list" : ""}`;
 
   useEffect(() => {
     if (!editable || !editorRef.current) {
@@ -59,6 +60,8 @@ export function ParagraphView({
         className={`${paragraphClassName} em-paragraph-editor${selected ? " is-selected" : ""}`}
         style={editorStyle}
         data-node-id={node.id}
+        data-list-kind={listKind}
+        data-list-level={node.attrs?.listLevel ?? 0}
         data-testid={`paragraph-${node.id}`}
         role="textbox"
         contentEditable
@@ -71,7 +74,13 @@ export function ParagraphView({
   }
 
   return (
-    <p className={paragraphClassName} style={style} data-node-id={node.id}>
+    <p
+      className={paragraphClassName}
+      style={style}
+      data-node-id={node.id}
+      data-list-kind={listKind}
+      data-list-level={node.attrs?.listLevel ?? 0}
+    >
       {node.children.length > 0 ? (
         node.children.map((child) => <TextNodeView key={child.id} node={child} />)
       ) : (

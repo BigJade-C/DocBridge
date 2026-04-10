@@ -1,13 +1,20 @@
 import { useMemo } from "react";
 
 import type { ParagraphNode } from "../types";
-import { getParagraphFontSize, isParagraphBold, type ParagraphAlignment } from "../editor/model";
+import {
+  getParagraphFontSize,
+  getParagraphListKind,
+  isParagraphBold,
+  type ParagraphAlignment,
+  type ParagraphListKind,
+} from "../editor/model";
 
 type EditorToolbarProps = {
   paragraph: ParagraphNode | null;
   onToggleBold: () => void;
   onFontSizeChange: (value: number) => void;
   onAlignmentChange: (alignment: ParagraphAlignment) => void;
+  onListKindChange: (listKind: ParagraphListKind) => void;
   onInsertParagraph: () => void;
   onDeleteParagraph: () => void;
   onExportDocx: () => void;
@@ -22,6 +29,7 @@ export function EditorToolbar({
   onToggleBold,
   onFontSizeChange,
   onAlignmentChange,
+  onListKindChange,
   onInsertParagraph,
   onDeleteParagraph,
   onExportDocx,
@@ -34,6 +42,7 @@ export function EditorToolbar({
   const currentBold = paragraph ? isParagraphBold(paragraph) : false;
   const currentFontSize = useMemo(() => (paragraph ? getParagraphFontSize(paragraph) ?? 10 : 10), [paragraph]);
   const currentAlignment = paragraph?.attrs?.alignment ?? "left";
+  const currentListKind = paragraph ? getParagraphListKind(paragraph) : "none";
 
   return (
     <div className="editor-toolbar" role="toolbar" aria-label="Paragraph formatting toolbar">
@@ -66,6 +75,33 @@ export function EditorToolbar({
             {alignment}
           </button>
         ))}
+      </div>
+
+      <div className="editor-toolbar-group" aria-label="Paragraph list formatting">
+        <button
+          type="button"
+          onClick={() => onListKindChange("numbered")}
+          disabled={isDisabled}
+          aria-pressed={currentListKind === "numbered"}
+        >
+          Numbered List
+        </button>
+        <button
+          type="button"
+          onClick={() => onListKindChange("bullet")}
+          disabled={isDisabled}
+          aria-pressed={currentListKind === "bullet"}
+        >
+          Bullet List
+        </button>
+        <button
+          type="button"
+          onClick={() => onListKindChange("none")}
+          disabled={isDisabled}
+          aria-pressed={currentListKind === "none"}
+        >
+          Clear List
+        </button>
       </div>
 
       <button type="button" onClick={onInsertParagraph} disabled={isDisabled}>

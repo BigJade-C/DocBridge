@@ -130,3 +130,23 @@ def test_editor_model_export_writes_replaced_image_to_docx(tmp_path: Path) -> No
         media_payloads = [archive.read(name) for name in media_names]
 
     assert base64.b64decode(PNG_BASE64) in media_payloads
+
+
+def test_editor_model_export_writes_numbered_and_bullet_paragraph_styles_to_docx(tmp_path: Path) -> None:
+    original = _build_ir_document("002_paragraph_style.hwp", tmp_path)
+    editor_model = ir_to_editor_model(original)
+
+    editor_model["children"][0]["attrs"]["listKind"] = "numbered"
+    editor_model["children"][0]["attrs"]["listLevel"] = 0
+    editor_model["children"][1]["attrs"]["listKind"] = "bullet"
+    editor_model["children"][1]["attrs"]["listLevel"] = 0
+    editor_model["children"][2]["attrs"]["listKind"] = "none"
+
+    output_path = tmp_path / "lists.docx"
+    write_docx_from_editor_model(editor_model, output_path, original_ir=original)
+
+    docx_document = DocxDocument(output_path)
+
+    assert docx_document.paragraphs[0].style.name == "List Number"
+    assert docx_document.paragraphs[1].style.name == "List Bullet"
+    assert docx_document.paragraphs[2].style.name != "List Number"

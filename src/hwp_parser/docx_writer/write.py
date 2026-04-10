@@ -14,7 +14,7 @@ from hwp_parser.ir.convert import document_from_ir_json_file
 from hwp_parser.ir.models import Document, DocumentSection, ImageBlock, Paragraph, Table, TableCell, TextRun
 
 from .image_resolver import ImageResolutionContext, resolve_image_path
-from .mapping import apply_character_style, map_alignment
+from .mapping import apply_character_style, map_alignment, map_list_style_name
 
 LOGGER = logging.getLogger(__name__)
 
@@ -145,6 +145,13 @@ def _write_image(
 
 
 def _fill_paragraph(paragraph: object, paragraph_block: Paragraph) -> None:
+    list_style_name = map_list_style_name(paragraph_block)
+    if list_style_name is not None:
+        try:
+            paragraph.style = list_style_name
+        except Exception as exc:
+            LOGGER.warning("Failed to apply DOCX list style %s: %s", list_style_name, exc)
+
     alignment = map_alignment(paragraph_block.paragraph_style)
     if alignment is not None:
         paragraph.alignment = alignment

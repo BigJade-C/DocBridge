@@ -6,6 +6,7 @@ import {
   getParagraphById,
   getTopLevelParagraphs,
   insertParagraphAfter,
+  setParagraphListKind,
   replaceImageSource,
   setParagraphAlignment,
   setParagraphFontSize,
@@ -62,6 +63,13 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
       return;
     }
     setDocument((current) => setParagraphAlignment(current, selectedParagraphId, alignment));
+  }
+
+  function handleListKindChange(listKind: "none" | "numbered" | "bullet") {
+    if (!selectedParagraphId) {
+      return;
+    }
+    setDocument((current) => setParagraphListKind(current, selectedParagraphId, listKind));
   }
 
   function handleInsertParagraph() {
@@ -167,6 +175,7 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
         onToggleBold={handleToggleBold}
         onFontSizeChange={handleFontSizeChange}
         onAlignmentChange={handleAlignmentChange}
+        onListKindChange={handleListKindChange}
         onInsertParagraph={handleInsertParagraph}
         onDeleteParagraph={handleDeleteParagraph}
         onExportDocx={handleExportDocx}

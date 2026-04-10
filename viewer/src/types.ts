@@ -14,6 +14,8 @@ export type ParagraphNode = {
   id: string;
   attrs?: {
     alignment?: string;
+    listKind?: "none" | "numbered" | "bullet";
+    listLevel?: number;
   };
   children: TextNode[];
 };

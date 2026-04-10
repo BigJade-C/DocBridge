@@ -150,3 +150,31 @@ def test_image_replacement_updates_ir_and_preserves_original_metadata(tmp_path: 
     assert image.binary_stream_ref == "BinData/BIN0001.png"
     assert image.alt_text == "교체된 이미지"
     assert image.raw["replacement_data_url"] == PNG_DATA_URL
+
+
+def test_numbered_and_bullet_list_updates_ir_list_info(tmp_path: Path) -> None:
+    original = _build_ir_document("002_paragraph_style.hwp", tmp_path)
+    editor_model = ir_to_editor_model(original)
+
+    editor_model["children"][0]["attrs"]["listKind"] = "numbered"
+    editor_model["children"][0]["attrs"]["listLevel"] = 0
+    editor_model["children"][1]["attrs"]["listKind"] = "bullet"
+    editor_model["children"][1]["attrs"]["listLevel"] = 0
+    editor_model["children"][2]["attrs"]["listKind"] = "none"
+
+    updated = editor_model_to_ir(editor_model, original_ir=original)
+
+    first = updated.blocks[0]
+    second = updated.blocks[1]
+    third = updated.blocks[2]
+
+    assert isinstance(first, Paragraph)
+    assert isinstance(second, Paragraph)
+    assert isinstance(third, Paragraph)
+    assert first.list_info is not None
+    assert first.list_info.kind == "numbered"
+    assert first.list_info.level == 0
+    assert second.list_info is not None
+    assert second.list_info.kind == "bulleted"
+    assert second.list_info.level == 0
+    assert third.list_info is None

@@ -8,6 +8,7 @@ from hwp_parser.ir.models import (
     CharacterStyle,
     Document,
     ImageBlock,
+    ListInfo,
     Paragraph,
     ParagraphStyle,
     Table,
@@ -92,6 +93,8 @@ def _paragraph_to_node(paragraph: Paragraph, id_gen: "_IdGenerator") -> dict[str
         "id": id_gen.next("p"),
         "attrs": {
             "alignment": paragraph.paragraph_style.alignment or "left",
+            "listKind": _editor_list_kind_from_ir(paragraph.list_info.kind if paragraph.list_info is not None else None),
+            "listLevel": paragraph.list_info.level if paragraph.list_info is not None else None,
         },
         "children": children,
     }
@@ -175,13 +178,16 @@ def _image_to_node(image: ImageBlock, id_gen: "_IdGenerator") -> dict[str, objec
 
 def _paragraph_node_to_ir(data: Mapping[str, Any], template: Paragraph | None) -> Paragraph:
     text_runs = [_text_node_to_ir(child, template) for child in _list_of_mappings(data.get("children"))]
+    attrs = _mapping(data.get("attrs"))
+    list_kind = _optional_str(attrs.get("listKind")) or "none"
+    list_level = _optional_int(attrs.get("listLevel"))
     return Paragraph(
         text_runs=text_runs,
         paragraph_style=ParagraphStyle(
-            alignment=_optional_str(_mapping(data.get("attrs")).get("alignment")) or "left",
+            alignment=_optional_str(attrs.get("alignment")) or "left",
             style_ref=template.paragraph_style.style_ref if template is not None else None,
         ),
-        list_info=template.list_info if template is not None else None,
+        list_info=_paragraph_list_info_from_editor_attrs(list_kind, list_level, template),
         is_empty=not any(run.text for run in text_runs),
         paragraph_type=template.paragraph_type if template is not None else "text_paragraph",
         source_path=template.source_path if template is not None else None,
@@ -316,6 +322,37 @@ def _font_size_from_marks(marks: list[Mapping[str, Any]]) -> float | None:
         if isinstance(value, (int, float)):
             return float(value)
     return None
+
+
+def _paragraph_list_info_from_editor_attrs(
+    list_kind: str,
+    list_level: int | None,
+    template: Paragraph | None,
+):
+    if list_kind == "none":
+        return None
+
+    template_list = template.list_info if template is not None else None
+    ir_kind = "numbered" if list_kind == "numbered" else "bulleted"
+    same_kind_template = template_list is not None and template_list.kind == ir_kind
+    return ListInfo(
+        kind=ir_kind,
+        level=list_level if list_level is not None else (template_list.level if template_list is not None else 0),
+        numbering_ref=template_list.numbering_ref if same_kind_template else None,
+        marker_text=template_list.marker_text if same_kind_template else None,
+        raw={
+            **(dict(template_list.raw) if template_list is not None else {}),
+            "source": "editor-model",
+        },
+    )
+
+
+def _editor_list_kind_from_ir(kind: str | None) -> str:
+    if kind == "numbered":
+        return "numbered"
+    if kind == "bulleted":
+        return "bullet"
+    return "none"
 
 
 @dataclass

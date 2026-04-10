@@ -50,6 +50,31 @@ describe("EditorSurface", () => {
     expect(screen.getAllByText(/"alignment": "center"/).length).toBeGreaterThan(0);
   });
 
+  it("numbered list, bullet list, and clear list update paragraph metadata", () => {
+    render(
+      <EditorSurface
+        initialDocument={fixture as EditorDocument}
+        originalIr={originalIrFixture as object}
+      />,
+    );
+
+    const paragraph = screen.getByTestId("paragraph-p2");
+    fireEvent.focus(paragraph);
+    fireEvent.click(screen.getByRole("button", { name: "Show Debug" }));
+
+    fireEvent.click(screen.getByRole("button", { name: "Numbered List" }));
+    expect(paragraph).toHaveAttribute("data-list-kind", "numbered");
+    expect(screen.getByText(/"listKind": "numbered"/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Bullet List" }));
+    expect(paragraph).toHaveAttribute("data-list-kind", "bullet");
+    expect(screen.getByText(/"listKind": "bullet"/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Clear List" }));
+    expect(paragraph).toHaveAttribute("data-list-kind", "none");
+    expect(screen.getByText(/"listKind": "none"/)).toBeInTheDocument();
+  });
+
   it("insert and delete paragraph keep document structure stable", () => {
     const { container } = render(
       <EditorSurface

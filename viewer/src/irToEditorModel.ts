@@ -17,6 +17,10 @@ type IrParagraphBlock = {
   paragraph_style?: {
     alignment?: string | null;
   } | null;
+  list_info?: {
+    kind?: string | null;
+    level?: number | null;
+  } | null;
   text_runs?: IrTextRun[];
 };
 
@@ -92,9 +96,23 @@ function paragraphToNode(block: IrParagraphBlock, idGen: IdGenerator): Paragraph
     id: idGen.next("p"),
     attrs: {
       alignment: block.paragraph_style?.alignment ?? "left",
+      listKind: irListKindToEditor(block.list_info?.kind),
+      listLevel: typeof block.list_info?.level === "number" ? block.list_info.level : undefined,
     },
     children,
   };
+}
+
+function irListKindToEditor(
+  kind: string | null | undefined,
+): "none" | "numbered" | "bullet" | undefined {
+  if (kind === "numbered") {
+    return "numbered";
+  }
+  if (kind === "bulleted") {
+    return "bullet";
+  }
+  return "none";
 }
 
 function textRunToNode(run: IrTextRun, idGen: IdGenerator): TextNode | null {
