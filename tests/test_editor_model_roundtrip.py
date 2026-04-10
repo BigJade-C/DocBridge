@@ -8,6 +8,12 @@ from hwp_parser.ir.convert import document_from_debug_dir
 from hwp_parser.ir.models import ImageBlock, Paragraph, Table
 
 
+PNG_DATA_URL = (
+    "data:image/png;base64,"
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a5u8AAAAASUVORK5CYII="
+)
+
+
 def _build_ir_document(sample_name: str, tmp_path: Path):
     summary = HwpContainerDumper(Path("hwp_samples") / sample_name).dump(tmp_path / "debug")
     return document_from_debug_dir(Path(summary.debug_dir))
@@ -128,3 +134,19 @@ def test_table_cell_text_edit_updates_ir_and_preserves_span_metadata(tmp_path: P
     assert table.rows[0].cells[1].text == "수정된 병합 셀"
     assert table.rows[0].cells[1].colspan == 2
     assert table.rows[0].cells[1].rowspan == 1
+
+
+def test_image_replacement_updates_ir_and_preserves_original_metadata(tmp_path: Path) -> None:
+    original = _build_ir_document("004_image_basic.hwp", tmp_path)
+    editor_model = ir_to_editor_model(original)
+
+    image_node = next(child for child in editor_model["children"] if child["type"] == "image")
+    image_node["attrs"]["src"] = PNG_DATA_URL
+    image_node["attrs"]["alt"] = "교체된 이미지"
+
+    updated = editor_model_to_ir(editor_model, original_ir=original)
+    image = next(block for block in updated.blocks if isinstance(block, ImageBlock))
+
+    assert image.binary_stream_ref == "BinData/BIN0001.png"
+    assert image.alt_text == "교체된 이미지"
+    assert image.raw["replacement_data_url"] == PNG_DATA_URL

@@ -5,6 +5,8 @@ import originalIrFixture from "../test/fixtures/008_mixed.ir.json";
 import type { EditorDocument } from "../types";
 import { EditorSurface } from "./EditorSurface";
 
+const PNG_BASE64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a5u8AAAAASUVORK5CYII=";
+
 describe("EditorSurface", () => {
   it("editing text updates the in-memory model and rendered paragraph", () => {
     render(
@@ -108,6 +110,29 @@ describe("EditorSurface", () => {
     expect(screen.getByText(/"text": "수정된 셀"/)).toBeInTheDocument();
     expect(screen.getByText(/"colspan": 1/)).toBeInTheDocument();
     expect(screen.getByText(/"rowspan": 1/)).toBeInTheDocument();
+  });
+
+  it("replacing an image updates the in-memory model and preview", async () => {
+    render(
+      <EditorSurface
+        initialDocument={fixture as EditorDocument}
+        originalIr={originalIrFixture as object}
+      />,
+    );
+
+    fireEvent.click(screen.getByTestId("image-img1"));
+    const replaceInput = screen.getByLabelText("Replace image") as HTMLInputElement;
+    const replacementFile = new File(
+      [Uint8Array.from(atob(PNG_BASE64), (char) => char.charCodeAt(0))],
+      "replacement.png",
+      { type: "image/png" },
+    );
+
+    fireEvent.change(replaceInput, { target: { files: [replacementFile] } });
+
+    expect(await screen.findByRole("img", { name: "그림입니다." })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Show Debug" }));
+    expect(screen.getByText(/"src": "data:image\/png;base64,/)).toBeInTheDocument();
   });
 
   it("keeps the debug panel hidden by default and toggles it on demand", () => {

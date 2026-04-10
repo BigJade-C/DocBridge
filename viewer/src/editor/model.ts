@@ -1,4 +1,4 @@
-import type { BlockNode, EditorDocument, EditorMark, ParagraphNode, TextNode } from "../types";
+import type { BlockNode, EditorDocument, EditorMark, ImageNode, ParagraphNode, TextNode } from "../types";
 
 export type ParagraphAlignment = "left" | "center" | "right";
 
@@ -11,6 +11,13 @@ export function getParagraphById(document: EditorDocument, paragraphId: string):
     (child): child is ParagraphNode => child.type === "paragraph" && child.id === paragraphId,
   );
   return paragraph ?? null;
+}
+
+export function getImageById(document: EditorDocument, imageId: string): ImageNode | null {
+  const image = document.children.find(
+    (child): child is ImageNode => child.type === "image" && child.id === imageId,
+  );
+  return image ?? null;
 }
 
 export function getParagraphText(paragraph: ParagraphNode): string {
@@ -137,6 +144,50 @@ export function deleteParagraph(
   return {
     document: nextDocument,
     nextSelectedParagraphId: nextParagraph?.id ?? null,
+  };
+}
+
+export function replaceImageSource(
+  document: EditorDocument,
+  imageId: string,
+  nextSource: string,
+): EditorDocument {
+  return {
+    ...document,
+    children: document.children.map((child) => {
+      if (child.type !== "image" || child.id !== imageId) {
+        return child;
+      }
+      return {
+        ...child,
+        attrs: {
+          ...child.attrs,
+          src: nextSource,
+        },
+      };
+    }),
+  };
+}
+
+export function setImageAltText(
+  document: EditorDocument,
+  imageId: string,
+  altText: string,
+): EditorDocument {
+  return {
+    ...document,
+    children: document.children.map((child) => {
+      if (child.type !== "image" || child.id !== imageId) {
+        return child;
+      }
+      return {
+        ...child,
+        attrs: {
+          ...child.attrs,
+          alt: altText,
+        },
+      };
+    }),
   };
 }
 

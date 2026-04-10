@@ -20,8 +20,8 @@ def write_docx_from_editor_model(
     *,
     original_ir: Document | None = None,
 ) -> Path:
-    _validate_export_images(original_ir)
     document = editor_model_to_ir(editor_model, original_ir=original_ir)
+    _validate_export_images(document)
     return write_docx(document, output_path)
 
 
@@ -50,6 +50,9 @@ def _validate_export_images(original_ir: Document | None) -> None:
 
     for block in original_ir.blocks:
         if not isinstance(block, ImageBlock):
+            continue
+        replacement_data_url = block.raw.get("replacement_data_url")
+        if isinstance(replacement_data_url, str) and replacement_data_url.startswith("data:"):
             continue
         binary_output_path = block.raw.get("binary_output_path")
         if not isinstance(binary_output_path, str) or not binary_output_path:

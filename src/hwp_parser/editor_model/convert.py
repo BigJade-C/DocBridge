@@ -63,10 +63,8 @@ def editor_model_to_ir(
             table_index += 1
             continue
         if node_type == "image":
-            if image_index < len(passthrough_images):
-                blocks.append(passthrough_images[image_index])
-            else:
-                blocks.append(_image_node_to_ir(child))
+            template = passthrough_images[image_index] if image_index < len(passthrough_images) else None
+            blocks.append(_image_node_to_ir(child, template=template))
             image_index += 1
 
     return Document(
@@ -250,13 +248,32 @@ def _table_node_to_ir(data: Mapping[str, Any], template: Table | None = None) ->
     )
 
 
-def _image_node_to_ir(data: Mapping[str, Any]) -> ImageBlock:
+def _image_node_to_ir(data: Mapping[str, Any], template: ImageBlock | None = None) -> ImageBlock:
     attrs = _mapping(data.get("attrs"))
+    src = _optional_str(attrs.get("src"))
+    raw = dict(template.raw) if template is not None else {}
+    binary_stream_ref = template.binary_stream_ref if template is not None else None
+
+    if src:
+        if src.startswith("data:"):
+            raw["replacement_data_url"] = src
+        else:
+            raw.pop("replacement_data_url", None)
+            binary_stream_ref = src
+
     return ImageBlock(
-        binary_stream_ref=_optional_str(attrs.get("src")),
-        width=_optional_int(attrs.get("width")),
-        height=_optional_int(attrs.get("height")),
-        alt_text=_optional_str(attrs.get("alt")),
+        source_path=template.source_path if template is not None else None,
+        source_index=template.source_index if template is not None else None,
+        source_ref=template.source_ref if template is not None else None,
+        source_record_index=template.source_record_index if template is not None else None,
+        binary_stream_ref=binary_stream_ref,
+        width=_optional_int(attrs.get("width")) if _optional_int(attrs.get("width")) is not None else (template.width if template is not None else None),
+        height=_optional_int(attrs.get("height")) if _optional_int(attrs.get("height")) is not None else (template.height if template is not None else None),
+        placement=template.placement if template is not None else None,
+        alt_text=_optional_str(attrs.get("alt")) if _optional_str(attrs.get("alt")) is not None else (template.alt_text if template is not None else None),
+        original_filename=template.original_filename if template is not None else None,
+        original_size_text=template.original_size_text if template is not None else None,
+        raw=raw,
     )
 
 

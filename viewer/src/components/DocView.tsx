@@ -6,14 +6,18 @@ import { TableView } from "./TableView";
 type DocViewProps = {
   document: EditorDocument;
   editableParagraphId?: string | null;
+  selectedImageId?: string | null;
   onSelectParagraph?: (paragraphId: string) => void;
+  onSelectImage?: (imageId: string) => void;
   onParagraphTextChange?: (paragraphId: string, text: string) => void;
 };
 
 export function DocView({
   document,
   editableParagraphId,
+  selectedImageId,
   onSelectParagraph,
+  onSelectImage,
   onParagraphTextChange,
 }: DocViewProps) {
   return (
@@ -23,7 +27,9 @@ export function DocView({
           key={child.id}
           node={child}
           editableParagraphId={editableParagraphId}
+          selectedImageId={selectedImageId}
           onSelectParagraph={onSelectParagraph}
+          onSelectImage={onSelectImage}
           onParagraphTextChange={onParagraphTextChange}
         />
       ))}
@@ -34,12 +40,16 @@ export function DocView({
 function NodeView({
   node,
   editableParagraphId,
+  selectedImageId,
   onSelectParagraph,
+  onSelectImage,
   onParagraphTextChange,
 }: {
   node: BlockNode;
   editableParagraphId?: string | null;
+  selectedImageId?: string | null;
   onSelectParagraph?: (paragraphId: string) => void;
+  onSelectImage?: (imageId: string) => void;
   onParagraphTextChange?: (paragraphId: string, text: string) => void;
 }) {
   const isEditable = Boolean(onSelectParagraph && onParagraphTextChange);
@@ -66,7 +76,13 @@ function NodeView({
     );
   }
   if (node.type === "image") {
-    return <ImageView node={node as ImageNode} />;
+    return (
+      <ImageView
+        node={node as ImageNode}
+        selected={selectedImageId === node.id}
+        onSelect={onSelectImage}
+      />
+    );
   }
   return null;
 }

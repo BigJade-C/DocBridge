@@ -2,15 +2,19 @@ import { useMemo, useState } from "react";
 
 import {
   deleteParagraph,
+  getImageById,
   getParagraphById,
   getTopLevelParagraphs,
   insertParagraphAfter,
+  replaceImageSource,
   setParagraphAlignment,
   setParagraphFontSize,
+  setImageAltText,
   toggleParagraphBold,
   updateParagraphText,
   type ParagraphAlignment,
 } from "../editor/model";
+import { readImageFileAsDataUrl } from "../imageUpload";
 import type { EditorDocument } from "../types";
 import { DocView } from "./DocView";
 import { EditorToolbar } from "./EditorToolbar";
@@ -25,6 +29,7 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
   const [selectedParagraphId, setSelectedParagraphId] = useState<string | null>(
     getTopLevelParagraphs(initialDocument)[0]?.id ?? null,
   );
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [exportMessage, setExportMessage] = useState<string | null>(null);
   const [debugVisible, setDebugVisible] = useState(false);
@@ -32,6 +37,10 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
   const selectedParagraph = useMemo(
     () => (selectedParagraphId ? getParagraphById(document, selectedParagraphId) : null),
     [document, selectedParagraphId],
+  );
+  const selectedImage = useMemo(
+    () => (selectedImageId ? getImageById(document, selectedImageId) : null),
+    [document, selectedImageId],
   );
 
   function handleToggleBold() {
@@ -83,6 +92,36 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
 
   function handleParagraphSelect(paragraphId: string) {
     setSelectedParagraphId(paragraphId);
+    setSelectedImageId(null);
+  }
+
+  function handleImageSelect(imageId: string) {
+    setSelectedImageId(imageId);
+    setSelectedParagraphId(null);
+  }
+
+  async function handleReplaceImage(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file || !selectedImageId) {
+      return;
+    }
+
+    try {
+      const dataUrl = await readImageFileAsDataUrl(file);
+      setDocument((current) => replaceImageSource(current, selectedImageId, dataUrl));
+      setExportMessage("Image replaced");
+    } catch (error) {
+      setExportMessage(error instanceof Error ? error.message : "Image replacement failed");
+    } finally {
+      event.target.value = "";
+    }
+  }
+
+  function handleImageAltTextChange(altText: string) {
+    if (!selectedImageId) {
+      return;
+    }
+    setDocument((current) => setImageAltText(current, selectedImageId, altText));
   }
 
   async function handleExportDocx() {
@@ -137,10 +176,34 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
         debugVisible={debugVisible}
       />
       {exportMessage ? <div className="editor-export-message">{exportMessage}</div> : null}
+      {selectedImage ? (
+        <div className="editor-image-tools" aria-label="Image tools">
+          <label className="editor-toolbar-field">
+            <span>Replace image</span>
+            <input
+              aria-label="Replace image"
+              type="file"
+              accept="image/png,image/jpeg,image/gif,image/bmp"
+              onChange={handleReplaceImage}
+            />
+          </label>
+          <label className="editor-toolbar-field">
+            <span>Alt text</span>
+            <input
+              aria-label="Image alt text"
+              type="text"
+              value={selectedImage.attrs?.alt ?? ""}
+              onChange={(event) => handleImageAltTextChange(event.target.value)}
+            />
+          </label>
+        </div>
+      ) : null}
       <DocView
         document={document}
         editableParagraphId={selectedParagraphId}
+        selectedImageId={selectedImageId}
         onSelectParagraph={handleParagraphSelect}
+        onSelectImage={handleImageSelect}
         onParagraphTextChange={handleParagraphTextChange}
       />
       {debugVisible ? <pre className="editor-json-preview">{JSON.stringify(document, null, 2)}</pre> : null}

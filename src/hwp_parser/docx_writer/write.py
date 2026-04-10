@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import io
 import logging
 from pathlib import Path
@@ -239,6 +240,15 @@ def _resolve_image_descriptor(
     *,
     image_resolution_context: ImageResolutionContext | None = None,
 ) -> str | io.BytesIO | None:
+    replacement_data = _decode_image_data_url(image_block.raw.get("replacement_data_url"))
+    if replacement_data is not None:
+        if _is_supported_image_bytes(replacement_data):
+            return io.BytesIO(replacement_data)
+        LOGGER.warning(
+            "Replacement image data URL is not a supported image payload: binary_stream_ref=%s",
+            image_block.binary_stream_ref,
+        )
+
     image_path = resolve_image_path(image_block, context=image_resolution_context)
     if image_path is not None:
         payload = image_path.read_bytes()
@@ -257,6 +267,20 @@ def _resolve_image_descriptor(
             image_path,
         )
     return None
+
+
+def _decode_image_data_url(value: object) -> bytes | None:
+    if not isinstance(value, str) or not value.startswith("data:") or "," not in value:
+        return None
+
+    header, encoded = value.split(",", 1)
+    if ";base64" not in header:
+        return None
+
+    try:
+        return base64.b64decode(encoded)
+    except Exception:
+        return None
 
 
 def _pixels_to_inches(value: int | None) -> float | None:

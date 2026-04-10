@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import base64
 from pathlib import Path
+from zipfile import ZipFile
 
 from docx import Document as DocxDocument
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -8,6 +10,10 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from hwp_parser.container import HwpContainerDumper
 from hwp_parser.editor_model import ir_to_editor_model, write_docx_from_editor_model
 from hwp_parser.ir.convert import document_from_debug_dir
+
+
+PNG_BASE64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a5u8AAAAASUVORK5CYII="
+PNG_DATA_URL = f"data:image/png;base64,{PNG_BASE64}"
 
 
 def _build_ir_document(sample_name: str, tmp_path: Path):
@@ -106,3 +112,21 @@ def test_editor_model_export_writes_edited_table_cell_text_to_docx(tmp_path: Pat
         ["A", "수정된 셀", "C"],
         ["D", "E", "F"],
     ]
+
+
+def test_editor_model_export_writes_replaced_image_to_docx(tmp_path: Path) -> None:
+    original = _build_ir_document("004_image_basic.hwp", tmp_path)
+    editor_model = ir_to_editor_model(original)
+    image_node = next(child for child in editor_model["children"] if child["type"] == "image")
+    image_node["attrs"]["src"] = PNG_DATA_URL
+    image_node["attrs"]["alt"] = "교체된 이미지"
+
+    output_path = tmp_path / "image-replaced.docx"
+    write_docx_from_editor_model(editor_model, output_path, original_ir=original)
+
+    with ZipFile(output_path) as archive:
+        media_names = [name for name in archive.namelist() if name.startswith("word/media/")]
+        assert media_names
+        media_payloads = [archive.read(name) for name in media_names]
+
+    assert base64.b64decode(PNG_BASE64) in media_payloads

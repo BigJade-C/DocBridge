@@ -184,6 +184,27 @@ body {
   gap: 8px;
 }
 
+.editor-image-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  width: min(100%, 794px);
+  margin: 0 auto 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(61, 70, 89, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.editor-image-tools input {
+  border: 1px solid rgba(61, 70, 89, 0.18);
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 9px 12px;
+  color: inherit;
+}
+
 .em-doc {
   box-sizing: border-box;
   width: min(100%, 794px);
@@ -271,6 +292,9 @@ body {
 .em-image {
   margin: 28px auto;
   max-width: 100%;
+  border-radius: 12px;
+  transition: box-shadow 120ms ease, outline-color 120ms ease, background-color 120ms ease;
+  cursor: pointer;
 }
 
 .em-image img {
@@ -288,6 +312,11 @@ body {
   border-radius: 10px;
   padding: 24px;
   background: linear-gradient(135deg, rgba(243, 246, 250, 0.92), rgba(255, 255, 255, 0.98));
+}
+
+.em-image.is-selected {
+  outline: 2px solid rgba(203, 119, 59, 0.5);
+  background: rgba(203, 119, 59, 0.05);
 }
 
 .em-image-meta {
