@@ -41,6 +41,7 @@ describe("App", () => {
     expect(within(statusBar).getByText("008_mixed")).toBeInTheDocument();
     expect(within(statusBar).getByText("Fixture")).toBeInTheDocument();
     expect(within(statusBar).getByText("Loaded")).toBeInTheDocument();
+    expect(within(statusBar).getByText("Clean")).toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Fixture"), {
       target: { value: "003_table_basic" },
@@ -130,6 +131,7 @@ describe("App", () => {
 
     render(<App />);
 
+    const statusBar = screen.getByLabelText("Document status");
     await screen.findByText("문서 제목");
 
     const uploadedDoc = {
@@ -154,6 +156,7 @@ describe("App", () => {
     expect(await screen.findByText("업로드 문단")).toBeInTheDocument();
     expect(screen.getByText("uploaded-editor.json")).toBeInTheDocument();
     expect(screen.getByText("EditorModel JSON")).toBeInTheDocument();
+    expect(within(statusBar).getByText("Clean")).toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Fixture"), {
       target: { value: "001_text_only" },
@@ -180,6 +183,7 @@ describe("App", () => {
     globalThis.fetch = fetchMock as unknown as typeof fetch;
 
     render(<App />);
+    const statusBar = screen.getByLabelText("Document status");
     await screen.findByText("문서 제목");
 
     const uploadedIr = {
@@ -209,6 +213,7 @@ describe("App", () => {
     expect(paragraph).toBeInTheDocument();
     expect(screen.getByText("uploaded-ir.json")).toBeInTheDocument();
     expect(screen.getByText("IR JSON")).toBeInTheDocument();
+    expect(within(statusBar).getByText("Clean")).toBeInTheDocument();
     expect(paragraph).toHaveStyle({
       fontWeight: "700",
       fontSize: "18px",
@@ -233,6 +238,7 @@ describe("App", () => {
     globalThis.fetch = fetchMock as unknown as typeof fetch;
 
     render(<App />);
+    const statusBar = screen.getByLabelText("Document status");
     await screen.findByText("문서 제목");
 
     const fileInput = screen.getByLabelText("Upload JSON") as HTMLInputElement;
@@ -302,6 +308,7 @@ describe("App", () => {
     globalThis.fetch = fetchMock as unknown as typeof fetch;
 
     render(<App />);
+    const statusBar = screen.getByLabelText("Document status");
     await screen.findByText("문서 제목");
 
     const fileInput = screen.getByLabelText("Import HWP/DOCX") as HTMLInputElement;
@@ -311,6 +318,7 @@ describe("App", () => {
     expect(await screen.findByText("HWP 가져오기 결과")).toBeInTheDocument();
     expect(screen.getByText("sample.hwp")).toBeInTheDocument();
     expect(screen.getByText("HWP")).toBeInTheDocument();
+    expect(within(statusBar).getByText("Clean")).toBeInTheDocument();
   });
 
   it("uploads DOCX through the import adapter path", async () => {
@@ -343,6 +351,7 @@ describe("App", () => {
     globalThis.fetch = fetchMock as unknown as typeof fetch;
 
     render(<App />);
+    const statusBar = screen.getByLabelText("Document status");
     await screen.findByText("문서 제목");
 
     const fileInput = screen.getByLabelText("Import HWP/DOCX") as HTMLInputElement;
@@ -353,7 +362,49 @@ describe("App", () => {
     expect(paragraph).toBeInTheDocument();
     expect(screen.getByText("sample.docx")).toBeInTheDocument();
     expect(screen.getByText("DOCX")).toBeInTheDocument();
+    expect(within(statusBar).getByText("Clean")).toBeInTheDocument();
     expect(paragraph).toHaveStyle({ textAlign: "right" });
+  });
+
+  it("marks the current document dirty after editing and resets on fixture switch", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/fixtures/008_mixed.json")) {
+        const mod = await import("./test/fixtures/008_mixed.json");
+        return buildResponse(mod.default as object);
+      }
+      if (url.endsWith("/fixtures/008_mixed.ir.json")) {
+        const mod = await import("./test/fixtures/008_mixed.ir.json");
+        return buildResponse(mod.default as object);
+      }
+      if (url.endsWith("/fixtures/001_text_only.json")) {
+        const mod = await import("./test/fixtures/001_text_only.json");
+        return buildResponse(mod.default as object);
+      }
+      if (url.endsWith("/fixtures/001_text_only.ir.json")) {
+        const mod = await import("./test/fixtures/001_text_only.ir.json");
+        return buildResponse(mod.default as object);
+      }
+      throw new Error(`Unexpected fetch URL: ${url}`);
+    });
+
+    globalThis.fetch = fetchMock as unknown as typeof fetch;
+
+    render(<App />);
+
+    const statusBar = screen.getByLabelText("Document status");
+    const paragraph = await screen.findByTestId("paragraph-p2");
+    paragraph.textContent = "수정된 첫 번째 문단";
+    fireEvent.input(paragraph);
+
+    expect(within(statusBar).getByText("Dirty")).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Fixture"), {
+      target: { value: "001_text_only" },
+    });
+
+    await screen.findByText("제목입니다");
+    expect(within(statusBar).getByText("Clean")).toBeInTheDocument();
   });
 
   it("shows a clear error for unsupported import file types", async () => {

@@ -75,6 +75,12 @@ body {
   font-size: 0.95rem;
 }
 
+.app-status-pill.is-dirty {
+  border-color: rgba(195, 101, 40, 0.28);
+  background: rgba(255, 243, 235, 0.9);
+  color: #8c4b1f;
+}
+
 .app-status-pill strong {
   color: #2b3444;
 }
@@ -371,6 +377,18 @@ body {
   margin: 0 0 16px;
   color: #256642;
   font-weight: 600;
+}
+
+.editor-dirty-state {
+  width: min(100%, 794px);
+  margin: 0 auto 14px;
+  color: #4f5b6f;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.editor-dirty-state.is-dirty {
+  color: #b0571d;
 }
 
 @media (max-width: 640px) {

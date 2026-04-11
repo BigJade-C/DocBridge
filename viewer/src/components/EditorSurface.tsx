@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   deleteParagraph,
@@ -23,10 +23,16 @@ import { EditorToolbar } from "./EditorToolbar";
 type EditorSurfaceProps = {
   initialDocument: EditorDocument;
   originalIr?: object | null;
+  onDirtyChange?: (isDirty: boolean) => void;
 };
 
-export function EditorSurface({ initialDocument, originalIr = null }: EditorSurfaceProps) {
+export function EditorSurface({
+  initialDocument,
+  originalIr = null,
+  onDirtyChange,
+}: EditorSurfaceProps) {
   const [document, setDocument] = useState<EditorDocument>(initialDocument);
+  const [cleanSnapshot, setCleanSnapshot] = useState(() => serializeDocument(initialDocument));
   const [selectedParagraphId, setSelectedParagraphId] = useState<string | null>(
     getTopLevelParagraphs(initialDocument)[0]?.id ?? null,
   );
@@ -43,6 +49,11 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
     () => (selectedImageId ? getImageById(document, selectedImageId) : null),
     [document, selectedImageId],
   );
+  const isDirty = serializeDocument(document) !== cleanSnapshot;
+
+  useEffect(() => {
+    onDirtyChange?.(isDirty);
+  }, [isDirty, onDirtyChange]);
 
   function handleToggleBold() {
     if (!selectedParagraphId) {
@@ -160,6 +171,7 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
       anchor.download = "docbridge-export.docx";
       anchor.click();
       URL.revokeObjectURL(objectUrl);
+      setCleanSnapshot(serializeDocument(document));
       setExportMessage("DOCX exported");
     } catch (error) {
       setExportMessage(error instanceof Error ? error.message : "Export failed");
@@ -184,6 +196,9 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
         exportLabel={isExporting ? "Exporting..." : "Export DOCX"}
         debugVisible={debugVisible}
       />
+      <div className={`editor-dirty-state${isDirty ? " is-dirty" : ""}`} aria-label="Editor dirty state">
+        {isDirty ? "Unsaved changes" : "Clean"}
+      </div>
       {exportMessage ? <div className="editor-export-message">{exportMessage}</div> : null}
       {selectedImage ? (
         <div className="editor-image-tools" aria-label="Image tools">
@@ -218,4 +233,8 @@ export function EditorSurface({ initialDocument, originalIr = null }: EditorSurf
       {debugVisible ? <pre className="editor-json-preview">{JSON.stringify(document, null, 2)}</pre> : null}
     </section>
   );
+}
+
+function serializeDocument(document: EditorDocument): string {
+  return JSON.stringify(document);
 }

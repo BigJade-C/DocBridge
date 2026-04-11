@@ -23,6 +23,7 @@ describe("EditorSurface", () => {
 
     expect(screen.getByText("수정된 첫 번째 문단")).toBeInTheDocument();
     expect(screen.getByText(/"text": "수정된 첫 번째 문단"/)).toBeInTheDocument();
+    expect(screen.getByText("Unsaved changes")).toBeInTheDocument();
   });
 
   it("bold, font size, and alignment controls update paragraph formatting", () => {
@@ -135,6 +136,7 @@ describe("EditorSurface", () => {
     expect(screen.getByText(/"text": "수정된 셀"/)).toBeInTheDocument();
     expect(screen.getByText(/"colspan": 1/)).toBeInTheDocument();
     expect(screen.getByText(/"rowspan": 1/)).toBeInTheDocument();
+    expect(screen.getByText("Unsaved changes")).toBeInTheDocument();
   });
 
   it("replacing an image updates the in-memory model and preview", async () => {
@@ -158,6 +160,22 @@ describe("EditorSurface", () => {
     expect(await screen.findByRole("img", { name: "그림입니다." })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Show Debug" }));
     expect(screen.getByText(/"src": "data:image\/png;base64,/)).toBeInTheDocument();
+    expect(screen.getByText("Unsaved changes")).toBeInTheDocument();
+  });
+
+  it("numbering changes mark the document dirty", () => {
+    render(
+      <EditorSurface
+        initialDocument={fixture as EditorDocument}
+        originalIr={originalIrFixture as object}
+      />,
+    );
+
+    const paragraph = screen.getByTestId("paragraph-p2");
+    fireEvent.focus(paragraph);
+    fireEvent.click(screen.getByRole("button", { name: "Bullet List" }));
+
+    expect(screen.getByText("Unsaved changes")).toBeInTheDocument();
   });
 
   it("keeps the debug panel hidden by default and toggles it on demand", () => {
@@ -208,6 +226,7 @@ describe("EditorSurface", () => {
     fireEvent.click(screen.getByRole("button", { name: "Export DOCX" }));
 
     await screen.findByText("DOCX exported");
+    expect(screen.getByText("Clean")).toBeInTheDocument();
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [, requestInit] = fetchMock.mock.calls[0];

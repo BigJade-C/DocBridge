@@ -18,6 +18,8 @@ export function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [sourceLabel, setSourceLabel] = useState(DEFAULT_FIXTURE_ID);
   const [sourceType, setSourceType] = useState<SourceType>("fixture");
+  const [isDirty, setIsDirty] = useState(false);
+  const [editorSessionKey, setEditorSessionKey] = useState(0);
   const [isDragActive, setIsDragActive] = useState(false);
   const dragDepthRef = useRef(0);
 
@@ -34,6 +36,8 @@ export function App() {
           setOriginalIr(irPayload);
           setSourceLabel(selectedFixtureId);
           setSourceType("fixture");
+          setIsDirty(false);
+          setEditorSessionKey((current) => current + 1);
         }
       })
       .catch((err: Error) => {
@@ -67,6 +71,8 @@ export function App() {
         setOriginalIr(loaded.originalIr);
         setSourceLabel(file.name);
         setSourceType(loaded.kind === "editor-model" ? "editor-model-json" : "ir-json");
+        setIsDirty(false);
+        setEditorSessionKey((current) => current + 1);
         return;
       }
 
@@ -76,6 +82,8 @@ export function App() {
         setOriginalIr(imported.originalIr);
         setSourceLabel(file.name);
         setSourceType(lowerName.endsWith(".docx") ? "docx" : "hwp");
+        setIsDirty(false);
+        setEditorSessionKey((current) => current + 1);
         return;
       }
 
@@ -172,6 +180,9 @@ export function App() {
           <span className="app-status-pill">
             <strong>Status</strong> {error ? "Error" : isLoading ? "Loading" : document ? "Loaded" : "Idle"}
           </span>
+          <span className={`app-status-pill${isDirty ? " is-dirty" : ""}`}>
+            <strong>Changes</strong> {isDirty ? "Dirty" : "Clean"}
+          </span>
         </div>
         <div className="app-controls">
           <FixtureSelector
@@ -214,9 +225,10 @@ export function App() {
       ) : null}
       {document && !isLoading ? (
         <EditorSurface
-          key={selectedFixtureId}
+          key={editorSessionKey}
           initialDocument={document}
           originalIr={originalIr}
+          onDirtyChange={setIsDirty}
         />
       ) : null}
     </main>
