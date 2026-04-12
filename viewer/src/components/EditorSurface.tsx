@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 
 import {
+  AUTOSAVE_DEBOUNCE_MS,
+  formatLastSavedLabel,
+  saveAutosaveDraft,
+} from "../autosave";
+import {
   deleteParagraph,
   getImageById,
   getParagraphById,
@@ -23,12 +28,14 @@ import { EditorToolbar } from "./EditorToolbar";
 type EditorSurfaceProps = {
   initialDocument: EditorDocument;
   originalIr?: object | null;
+  autosaveKey: string;
   onDirtyChange?: (isDirty: boolean) => void;
 };
 
 export function EditorSurface({
   initialDocument,
   originalIr = null,
+  autosaveKey,
   onDirtyChange,
 }: EditorSurfaceProps) {
   const [document, setDocument] = useState<EditorDocument>(initialDocument);
@@ -40,6 +47,8 @@ export function EditorSurface({
   const [isExporting, setIsExporting] = useState(false);
   const [exportMessage, setExportMessage] = useState<string | null>(null);
   const [debugVisible, setDebugVisible] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<string | null>(null);
+  const [autosaveNow, setAutosaveNow] = useState(() => Date.now());
 
   const selectedParagraph = useMemo(
     () => (selectedParagraphId ? getParagraphById(document, selectedParagraphId) : null),
@@ -54,6 +63,37 @@ export function EditorSurface({
   useEffect(() => {
     onDirtyChange?.(isDirty);
   }, [isDirty, onDirtyChange]);
+
+  useEffect(() => {
+    setLastSavedAt(null);
+    setAutosaveNow(Date.now());
+  }, [autosaveKey]);
+
+  useEffect(() => {
+    if (!isDirty) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      const savedAt = saveAutosaveDraft(autosaveKey, document);
+      setLastSavedAt(savedAt);
+      setAutosaveNow(Date.now());
+    }, AUTOSAVE_DEBOUNCE_MS);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [autosaveKey, document, isDirty]);
+
+  useEffect(() => {
+    if (!lastSavedAt) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setAutosaveNow(Date.now());
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [lastSavedAt]);
 
   function handleToggleBold() {
     if (!selectedParagraphId) {
@@ -198,6 +238,9 @@ export function EditorSurface({
       />
       <div className={`editor-dirty-state${isDirty ? " is-dirty" : ""}`} aria-label="Editor dirty state">
         {isDirty ? "Unsaved changes" : "Clean"}
+      </div>
+      <div className="editor-autosave-state" aria-label="Autosave status">
+        {formatLastSavedLabel(lastSavedAt, new Date(autosaveNow))}
       </div>
       {exportMessage ? <div className="editor-export-message">{exportMessage}</div> : null}
       {selectedImage ? (

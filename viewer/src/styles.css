@@ -391,6 +391,13 @@ body {
   color: #b0571d;
 }
 
+.editor-autosave-state {
+  width: min(100%, 794px);
+  margin: 0 auto 14px;
+  color: #6a7484;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 640px) {
   .app-shell {
     padding: 28px 14px 56px;

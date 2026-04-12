@@ -1,5 +1,6 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 
+import { AUTOSAVE_DEBOUNCE_MS } from "../autosave";
 import fixture from "../test/fixtures/008_mixed.json";
 import originalIrFixture from "../test/fixtures/008_mixed.ir.json";
 import type { EditorDocument } from "../types";
@@ -8,9 +9,15 @@ import { EditorSurface } from "./EditorSurface";
 const PNG_BASE64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a5u8AAAAASUVORK5CYII=";
 
 describe("EditorSurface", () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+    vi.useRealTimers();
+  });
+
   it("editing text updates the in-memory model and rendered paragraph", () => {
     render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -29,6 +36,7 @@ describe("EditorSurface", () => {
   it("bold, font size, and alignment controls update paragraph formatting", () => {
     render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -54,6 +62,7 @@ describe("EditorSurface", () => {
   it("numbered list, bullet list, and clear list update paragraph metadata", () => {
     render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -79,6 +88,7 @@ describe("EditorSurface", () => {
   it("insert and delete paragraph keep document structure stable", () => {
     const { container } = render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -103,6 +113,7 @@ describe("EditorSurface", () => {
   it("table cell text becomes editable while image blocks remain read-only", () => {
     const { container } = render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -122,6 +133,7 @@ describe("EditorSurface", () => {
   it("editing table cell text updates the in-memory model while keeping table structure", () => {
     render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -142,6 +154,7 @@ describe("EditorSurface", () => {
   it("replacing an image updates the in-memory model and preview", async () => {
     render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -166,6 +179,7 @@ describe("EditorSurface", () => {
   it("numbering changes mark the document dirty", () => {
     render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -181,6 +195,7 @@ describe("EditorSurface", () => {
   it("keeps the debug panel hidden by default and toggles it on demand", () => {
     render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -211,6 +226,7 @@ describe("EditorSurface", () => {
 
     render(
       <EditorSurface
+        autosaveKey="docbridge:test:fixture"
         initialDocument={fixture as EditorDocument}
         originalIr={originalIrFixture as object}
       />,
@@ -236,5 +252,30 @@ describe("EditorSurface", () => {
     expect(createObjectURLMock).toHaveBeenCalledWith(blob);
     expect(revokeObjectURLMock).toHaveBeenCalled();
     clickMock.mockRestore();
+  });
+
+  it("autosaves the edited document to localStorage after debounce", () => {
+    vi.useFakeTimers();
+
+    render(
+      <EditorSurface
+        autosaveKey="docbridge:test:fixture"
+        initialDocument={fixture as EditorDocument}
+        originalIr={originalIrFixture as object}
+      />,
+    );
+
+    const paragraph = screen.getByTestId("paragraph-p2");
+    paragraph.textContent = "자동저장 문단";
+    fireEvent.input(paragraph);
+
+    act(() => {
+      vi.advanceTimersByTime(AUTOSAVE_DEBOUNCE_MS + 10);
+    });
+
+    const saved = window.localStorage.getItem("docbridge:test:fixture");
+    expect(saved).not.toBeNull();
+    expect(saved).toContain("자동저장 문단");
+    expect(screen.getByText("Last saved just now")).toBeInTheDocument();
   });
 });

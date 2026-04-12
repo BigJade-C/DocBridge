@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import { EditorSurface } from "./components/EditorSurface";
+import { buildAutosaveKey } from "./autosave";
 import { FixtureSelector } from "./components/FixtureSelector";
 import { DEFAULT_FIXTURE_ID, getFixtureOption } from "./fixtures";
 import { importDocumentFile } from "./importDocument";
@@ -57,6 +58,7 @@ export function App() {
   }, [selectedFixtureId]);
 
   const selectedFixture = getFixtureOption(selectedFixtureId);
+  const autosaveKey = buildAutosaveKey(sourceType, sourceLabel);
 
   async function processLocalFile(file: File) {
     const lowerName = file.name.toLowerCase();
@@ -228,6 +230,7 @@ export function App() {
           key={editorSessionKey}
           initialDocument={document}
           originalIr={originalIr}
+          autosaveKey={autosaveKey}
           onDirtyChange={setIsDirty}
         />
       ) : null}

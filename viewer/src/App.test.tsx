@@ -1,5 +1,6 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
+import { buildAutosaveKey } from "./autosave";
 import { App } from "./App";
 
 function buildResponse(payload: object) {
@@ -10,6 +11,11 @@ function buildResponse(payload: object) {
 }
 
 describe("App", () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+    vi.useRealTimers();
+  });
+
   it("loads the default 008 fixture and switches to another fixture", async () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
@@ -405,6 +411,53 @@ describe("App", () => {
 
     await screen.findByText("제목입니다");
     expect(within(statusBar).getByText("Clean")).toBeInTheDocument();
+  });
+
+  it("uses a different autosave key when loading a different document", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/fixtures/008_mixed.json")) {
+        const mod = await import("./test/fixtures/008_mixed.json");
+        return buildResponse(mod.default as object);
+      }
+      if (url.endsWith("/fixtures/008_mixed.ir.json")) {
+        const mod = await import("./test/fixtures/008_mixed.ir.json");
+        return buildResponse(mod.default as object);
+      }
+      if (url.endsWith("/fixtures/001_text_only.json")) {
+        const mod = await import("./test/fixtures/001_text_only.json");
+        return buildResponse(mod.default as object);
+      }
+      if (url.endsWith("/fixtures/001_text_only.ir.json")) {
+        const mod = await import("./test/fixtures/001_text_only.ir.json");
+        return buildResponse(mod.default as object);
+      }
+      throw new Error(`Unexpected fetch URL: ${url}`);
+    });
+
+    globalThis.fetch = fetchMock as unknown as typeof fetch;
+
+    render(<App />);
+
+    const firstParagraph = await screen.findByTestId("paragraph-p2");
+    firstParagraph.textContent = "첫 문서 변경";
+    fireEvent.input(firstParagraph);
+    await act(async () => {
+      await new Promise((resolve) => window.setTimeout(resolve, 1600));
+    });
+
+    const firstKey = buildAutosaveKey("fixture", "008_mixed");
+    expect(window.localStorage.getItem(firstKey)).toContain("첫 문서 변경");
+
+    fireEvent.change(screen.getByLabelText("Fixture"), {
+      target: { value: "001_text_only" },
+    });
+
+    await screen.findByText("제목입니다");
+
+    const secondKey = buildAutosaveKey("fixture", "001_text_only");
+    expect(secondKey).not.toBe(firstKey);
+    expect(window.localStorage.getItem(secondKey)).toBeNull();
   });
 
   it("shows a clear error for unsupported import file types", async () => {
